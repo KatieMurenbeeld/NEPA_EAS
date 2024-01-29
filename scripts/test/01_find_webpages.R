@@ -61,6 +61,38 @@ for(num in nums) {
   output <- data.frame(detail_urls, overview_urls)
 }
 
+detail_test_urls <- output[[1]]
+overview_test_urls <- output[[2]]
+
+detail_h1 <- c()
+overview_h1 <- c()
+#body <- c()
+
+for (url in detail_test_urls) {
+  u <- url
+  print(u)
+  h1 <- read_html(u) %>% 
+    html_element("h1") %>%
+    html_text2()
+  #bod <- read_html(u) %>% html_element("body") %>% html_text2() # returns "This portlet is unavailable."
+  detail_h1 <- c(detail_h1, h1)
+  #body <- c(body, bod)
+  detail_h1_out <- data.frame(detail_h1)
+  #body_out <- data.frame(body)
+}
+
+for (url in overview_test_urls) {
+  u <- url
+  print(u)
+  h1 <- read_html(u) %>% 
+    html_element("h1") %>%
+    html_text2()
+  #bod <- read_html(u) %>% html_element("body") %>% html_text2() # returns "This portlet is unavailable."
+  overview_h1 <- c(overview_h1, h1)
+  #body <- c(body, bod)
+  overview_h1_out <- data.frame(overview_h1)
+  #body_out <- data.frame(body)
+}
 
 
 
