@@ -1,0 +1,20 @@
+######################################
+### Notes for finding Forest Service 
+### Projects requiring an EA
+### Init Date: 29 Jan 2024
+######################################
+
+Project website overview with link to documents
+
+https://www.fs.usda.gov/project/?project=<PROJECT NUMBER>&exp=overview
+
+Project website with project details
+
+https://www.fs.usda.gov/project/?project=<PROJECT NUMBER>&exp=detail
+
+So now I want to take the list of EA project numbers and
+0) Create an empty dataframe with the project number, name, year init and columns
+for overview and detail
+1) Look to see if the webpage(s) exist
+2) IF the webpage(s) do exist THEN put a 1 in the overview and/or detail column
+3) IF the webpage(s) do not exist THEN put a 0 in the overview and/or detail column
