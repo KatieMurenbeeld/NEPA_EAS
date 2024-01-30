@@ -92,9 +92,11 @@ for (url in overview_test_urls) {
   #bod <- read_html(u) %>% html_element("body") %>% html_text2() # returns "This portlet is unavailable."
   overview_h1 <- c(overview_h1, h1)
   #body <- c(body, bod)
-  overview_h1_out <- data.frame(overview_h1)
+  #overview_h1_out <- data.frame(overview_h1)
   #body_out <- data.frame(body)
 }
 
+overview_h1_out <- data.frame(overview_h1)
+projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1)
 
 
