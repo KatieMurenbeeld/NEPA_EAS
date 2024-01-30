@@ -61,8 +61,8 @@ for(num in nums) {
   output <- data.frame(detail_urls, overview_urls)
 }
 
-detail_test_urls <- output[[1]][482:500]
-overview_test_urls <- output[[2]]
+detail_test_urls <- output[[1]][1:500]
+overview_test_urls <- output[[2]][1:500]
 
 detail_h1 <- c()
 overview_h1 <- c()
@@ -80,7 +80,7 @@ for (url in detail_test_urls) {
   #detail_h1_out <- data.frame(detail_h1)
   #body_out <- data.frame(body)
 }
-
+detail_h1_out <- data.frame(detail_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1)
 
 for (url in overview_test_urls) {
