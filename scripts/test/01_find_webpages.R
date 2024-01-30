@@ -45,7 +45,7 @@ for (url in detail_2009_urls) {
   h1 <- read_html(u) %>% 
     html_element("h1") %>%
     html_text2()
-  detail_2009_h1 <- c(detail_h1, h1)
+  detail_2009_h1 <- c(detail_2009_h1, h1)
 }
 
 detail_h1_out <- data.frame(detail_h1)
