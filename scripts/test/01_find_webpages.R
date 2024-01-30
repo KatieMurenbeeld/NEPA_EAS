@@ -61,21 +61,37 @@ for(num in nums) {
   output <- data.frame(detail_urls, overview_urls)
 }
 
+nums2 <- projs_2009$PROJECT.NUMBER
+
+for(num in nums2) {
+  n <- num 
+  # append to your empty lists
+  detail_urls <- c(detail_urls, gsub('PROJNUM', n, detail))
+  overview_urls <- c(overview_urls, gsub('PROJNUM', n, overview))
+  # make lists into a dataframe
+  output2 <- data.frame(detail_urls, overview_urls)
+}
+
+detail_2009_urls <- output2[[1]]
+overview_2009_urls <- output2[[2]]
+
 detail_test_urls <- output[[1]][501:1000]
 overview_test_urls <- output[[2]][501:1000]
 
 #detail_h1 <- c() # do not remake, want to keep appending to this list
 #overview_h1 <- c() # do not remake, want to keep appending to this list
 #body <- c()
+detail_2009_h1 <- c()
+overview_2009_h1 <- c()
 
-for (url in detail_test_urls) {
+for (url in detail_2009_urls) {
   u <- url
   print(u)
   h1 <- read_html(u) %>% 
     html_element("h1") %>%
     html_text2()
   #bod <- read_html(u) %>% html_element("body") %>% html_text2() # returns "This portlet is unavailable."
-  detail_h1 <- c(detail_h1, h1)
+  detail_2009_h1 <- c(detail_h1, h1)
   #body <- c(body, bod)
   #detail_h1_out <- data.frame(detail_h1)
   #body_out <- data.frame(body)
@@ -84,22 +100,27 @@ detail_h1_out <- data.frame(detail_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1)
 projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000], projs$calendarYearInitiated[1:1000], detail_h1_out$detail_h1)
 
-for (url in overview_test_urls) {
+detail_2009_h1_out <- data.frame(detail_2009_h1)
+
+for (url in overview_2009_urls) {
   u <- url
   print(u)
   h1 <- read_html(u) %>% 
     html_element("h1") %>%
     html_text2()
   #bod <- read_html(u) %>% html_element("body") %>% html_text2() # returns "This portlet is unavailable."
-  overview_h1 <- c(overview_h1, h1)
+  overview_2009_h1 <- c(overview_2009_h1, h1)
   #body <- c(body, bod)
   #overview_h1_out <- data.frame(overview_h1)
   #body_out <- data.frame(body)
 }
 
-overview_h1_out <- data.frame(overview_h1)
+overview_2009_h1_out <- data.frame(overview_2009_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], 
                         projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1,
                         overview_h1_out$overview_h1)
+projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000], 
+                        projs$calendarYearInitiated[1:1000], detail_h1_out$detail_h1,
+                        overview_h1_out$overview_h1)
 
-
+#projs_2009_all <- 
