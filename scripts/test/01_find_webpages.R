@@ -33,17 +33,11 @@ for(num in nums) {
   output <- data.frame(detail_urls, overview_urls)
 }
 
-detail_2009_urls <- output2[[1]][1:500]
-overview_2009_urls <- output2[[2]][1:500]
+detail_2009_h1 <- c() # do not remake, want to keep appending to this list
+overview_2009_h1 <- c() # do not remake, want to keep appending to this list
 
-detail_test_urls <- output[[1]][501:1000]
-overview_test_urls <- output[[2]][501:1000]
-
-#detail_h1 <- c() # do not remake, want to keep appending to this list
-#overview_h1 <- c() # do not remake, want to keep appending to this list
-#body <- c()
-detail_2009_h1 <- c()
-overview_2009_h1 <- c()
+detail_2009_urls <- output[[1]][1:500] # update this index in increments of 500
+overview_2009_urls <- output[[2]][1:500] # update this index in increments of 500
 
 for (url in detail_2009_urls) {
   u <- url
@@ -51,12 +45,9 @@ for (url in detail_2009_urls) {
   h1 <- read_html(u) %>% 
     html_element("h1") %>%
     html_text2()
-  #bod <- read_html(u) %>% html_element("body") %>% html_text2() # returns "This portlet is unavailable."
   detail_2009_h1 <- c(detail_h1, h1)
-  #body <- c(body, bod)
-  #detail_h1_out <- data.frame(detail_h1)
-  #body_out <- data.frame(body)
 }
+
 detail_h1_out <- data.frame(detail_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1)
 projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000], projs$calendarYearInitiated[1:1000], detail_h1_out$detail_h1)
@@ -69,11 +60,7 @@ for (url in overview_2009_urls) {
   h1 <- read_html(u) %>% 
     html_element("h1") %>%
     html_text2()
-  #bod <- read_html(u) %>% html_element("body") %>% html_text2() # returns "This portlet is unavailable."
   overview_2009_h1 <- c(overview_2009_h1, h1)
-  #body <- c(body, bod)
-  #overview_h1_out <- data.frame(overview_h1)
-  #body_out <- data.frame(body)
 }
 
 overview_2009_h1_out <- data.frame(overview_2009_h1)
