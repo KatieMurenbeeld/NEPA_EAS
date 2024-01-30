@@ -20,7 +20,7 @@ eas_projs <- eas_df %>%
 eas_projs_2009_purpose <- eas_2009_purpose_df %>%
   select(PROJECT.NUMBER, PROJECT.NAME, calendarYearInitiated, HF.Fuels.management...purpose, 
          TM.Forest.products...purpose, MG.Minerals.and.geology...purpose, RG.Grazing.management...purpose,
-         VM.Vegetation.management..non.forest.products....purpose)
+         VM.Vegetation.management..non.forest.products....purpose, PROJECT.STATUS)
 
 # Write this to a csv
 
