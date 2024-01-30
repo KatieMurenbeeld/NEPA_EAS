@@ -61,11 +61,11 @@ for(num in nums) {
   output <- data.frame(detail_urls, overview_urls)
 }
 
-detail_test_urls <- output[[1]][1:500]
-overview_test_urls <- output[[2]][1:500]
+detail_test_urls <- output[[1]][501:1000]
+overview_test_urls <- output[[2]][501:1000]
 
-detail_h1 <- c()
-overview_h1 <- c()
+#detail_h1 <- c() # do not remake, want to keep appending to this list
+#overview_h1 <- c() # do not remake, want to keep appending to this list
 #body <- c()
 
 for (url in detail_test_urls) {
@@ -82,6 +82,7 @@ for (url in detail_test_urls) {
 }
 detail_h1_out <- data.frame(detail_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1)
+projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000], projs$calendarYearInitiated[1:1000], detail_h1_out$detail_h1)
 
 for (url in overview_test_urls) {
   u <- url
@@ -97,6 +98,8 @@ for (url in overview_test_urls) {
 }
 
 overview_h1_out <- data.frame(overview_h1)
-projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1)
+projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], 
+                        projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1,
+                        overview_h1_out$overview_h1)
 
 
