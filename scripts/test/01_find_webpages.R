@@ -4,6 +4,10 @@ library(rvest)
 # Load the EA data csv
 projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_2009_purpose.csv")
 
+# Filter out the grazing and mining
+projs <- projs %>%
+  filter(RG.Grazing.management...purpose == 1 | MG.Minerals.and.geology...purpose == 1)
+
 # Add columns for the "overview" project page and the "detail" project page
 
 projs$overview <- NA
@@ -48,8 +52,9 @@ for (url in detail_2009_urls) {
   detail_2009_h1 <- c(detail_2009_h1, h1)
 }
 
-detail_h1_out <- data.frame(detail_h1)
-projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1)
+detail_h1_out <- data.frame(detail_2009_h1)
+projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_2009_h1)
+write.csv(projs_500, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/projs_500_2009_h1.csv")
 projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000], projs$calendarYearInitiated[1:1000], detail_h1_out$detail_h1)
 
 detail_2009_h1_out <- data.frame(detail_2009_h1)
