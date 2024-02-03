@@ -1,5 +1,8 @@
 library(tidyverse)
 library(rvest)
+library(stringr)
+library(RSelenium)
+library(httr)
 
 # Load the EA data csv
 projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_2009_purpose.csv")
@@ -83,6 +86,8 @@ projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000
 # retrieving the target web page 
 document <- read_html("https://www.fs.usda.gov/project/?project=57069&exp=overview")
 
+doc_html <- read_html("https://www.fs.usda.gov/project/?project=57069&exp=overview") %>% toString()
+
 # selecting the list of product HTML elements 
 html_products <- document %>% html_elements("a.item-link")
 
@@ -96,12 +101,35 @@ document %>% html_elements("html") %>% html_attrs("href")
 
 document %>% html_elements("div.item-name")
 
+document %>% html_elements("button")
+
 document %>% html_nodes(xpath = '//*[@id="contextmenutarget16"]/div/div[2]/div/div[1]/div[1]/div')
 
 document %>% html_nodes(xpath = '/html/body/div[1]/div[5]/span/div/main/div/div/div[2]/div/div[2]/div/div/div[1]/div/div/div[2]/div/div[1]/div/div[2]/div/div[1]/div[1]/div/a')
 
 document %>% html_elements("body")
 
-document %>% html_element(xpath = '/html/body/div[1]/div/div/div/div/div/div/div/div/div[1]/div/main/div[1]/iframe') %>% html_attr("a")
+document %>% html_element(xpath = '/html/body/div[1]/div/div/div/div/div/div/div/div/div[1]/div/main/div[1]/iframe')
+
+document %>% html_elements("svg")
+
+iframe <- document %>% html_elements("iframe")
+
+# copy element: <a data-resin-folder_id="159108591507" data-resin-target="openfolder" class="item-link item-link " href="/s/2p4nq5j0n58ftr5jiu64xzux16n0rkgn/folder/159108591507">Decision</a>
+# copy selector:  #contextmenutarget372 > div > div.ReactVirtualized__Table__rowColumn.file-list-name > div > div.item-name-holder > div.name-row > div > a
+# JS path: document.querySelector("#contextmenutarget372 > div > div.ReactVirtualized__Table__rowColumn.file-list-name > div > div.item-name-holder > div.name-row > div > a")
+
+
+# Just the link to the documents on pinyon public xpath //*[@id="centercol"]/p[5]/a
+
+doc_html %>% str_match("iframe")
+
+doc_text <- document %>% html_text2()
+
+# ------------------------------------
+# bread crumb: test with RSelenium
+
+rD <- rsDriver(browser = "chrome",
+              chromever = 121.0.6167.139)
 
 
