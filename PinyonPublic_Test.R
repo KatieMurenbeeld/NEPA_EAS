@@ -1,4 +1,6 @@
 library(tidyverse)
+library(boxr)
+library(curl)
 
 
 ## 1) Make a list of all the file names
@@ -40,3 +42,13 @@ file_names <- list.files("/Users/kathrynmurenbeeld/Desktop/NEPA_EAS/data/origina
 
 file_names
 
+
+# -------------------------------------------------------------------------
+## Testing with boxr
+# supply your own "your_client_id" & "your_client_secret"
+box_auth(client_id = "ij540gs8d73q3raloecezxf8gmskryyr", client_secret = "BJMsqc71949Tzd35mH21qqnlITOdzgJW")
+
+
+box_fetch(dir_id = "158017966393",
+          local_dir = "247318806274", recursive = TRUE,
+          overwrite = FALSE, delete = FALSE)
