@@ -135,6 +135,8 @@ doc_html <- read_html("https://www.fs.usda.gov/project/?project=57069&exp=overvi
 html_products <- document %>% html_elements("a.item-link")
 
 test <- document %>% html_elements("a") %>% html_attr("href")
+test[c(2,7)]
+
 
 html_divs <- document %>% html_elements("div") 
 
