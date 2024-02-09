@@ -9,7 +9,7 @@ projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_p
 
 # Filter out the grazing and mining
 projs <- projs %>%
-  filter(RG.Grazing.management...purpose == 1 | MG.Minerals.and.geology...purpose == 1)
+  filter(TM.Forest.products...purpose == 1 | HF.Fuels.management...purpose == 1 | VM.Vegetation.management..non.forest.products....purpose == 1)
 
 # Add columns for the "overview" project page and the "detail" project page
 
@@ -37,14 +37,14 @@ for(num in nums) {
   detail_urls <- c(detail_urls, gsub('PROJNUM', n, detail))
   overview_urls <- c(overview_urls, gsub('PROJNUM', n, overview))
   # make lists into a dataframe
-  output <- data.frame(detail_urls, overview_urls)
+  output <- data.frame(n, overview_urls)
 }
 
 detail_2009_h1 <- c() # do not remake, want to keep appending to this list
 overview_2009_h1 <- c() # do not remake, want to keep appending to this list
 
-detail_2009_urls <- output[[1]][1:500] # update this index in increments of 500
-overview_2009_urls <- output[[2]][1:500] # update this index in increments of 500
+detail_2009_urls <- output[[1]][1:50] # update this index in increments of 500
+overview_2009_urls <- output[[2]][1:50] # update this index in increments of 500
 
 for (url in detail_2009_urls) {
   u <- url
@@ -54,6 +54,24 @@ for (url in detail_2009_urls) {
     html_text2()
   detail_2009_h1 <- c(detail_2009_h1, h1)
 }
+detail_2009 <- data.frame(detail_2009_h1)
+
+## get the htmls available for each project
+overview_2009_htmls <- c()
+
+for (url in overview_2009_urls) {
+  u <- url
+  print(u)
+  proj_name <- read_html(u) %>%
+    html_elements("h1") %>%
+    html_text2()
+  htmls <- read_html(u) %>% 
+    html_elements("a") %>%
+    html_attr("href")
+  overview_2009_htmls <- c(overview_2009_htmls, proj_name, htmls)
+}
+
+htmls_2009 <- data.frame(overview_2009_htmls)
 
 detail_h1_out <- data.frame(detail_2009_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_2009_h1)
@@ -70,6 +88,8 @@ for (url in overview_2009_urls) {
     html_text2()
   overview_2009_h1 <- c(overview_2009_h1, h1)
 }
+
+for (url in overview_2009_urls)
 
 overview_2009_h1_out <- data.frame(overview_2009_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], 
@@ -91,7 +111,7 @@ doc_html <- read_html("https://www.fs.usda.gov/project/?project=57069&exp=overvi
 # selecting the list of product HTML elements 
 html_products <- document %>% html_elements("a.item-link")
 
-document %>% html_elements("a") %>% html_attr("href")
+test <- document %>% html_elements("a") %>% html_attr("href")
 
 html_divs <- document %>% html_elements("div") 
 
