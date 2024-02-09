@@ -22,11 +22,12 @@ projs$PROJECT.NUMBER <- as.character(projs$PROJECT.NUMBER)
 ## Make a list of url links based on the project numbers
 
 overview <- "https://www.fs.usda.gov/project/?project=PROJNUM&exp=overview"
-detail <- "https://www.fs.usda.gov/project/?project=PROJNUM&exp=detail"
+#detail <- "https://www.fs.usda.gov/project/?project=PROJNUM&exp=detail"
 
 # Create 2 empty lists
-detail_urls <- c()
+#detail_urls <- c()
 overview_urls <- c()
+proj_nums <- c()
 
 # create a list of the project numbers
 nums <- projs$PROJECT.NUMBER
@@ -34,17 +35,20 @@ nums <- projs$PROJECT.NUMBER
 for(num in nums) {
   n <- num 
   # append to your empty lists
-  detail_urls <- c(detail_urls, gsub('PROJNUM', n, detail))
+  #detail_urls <- c(detail_urls, gsub('PROJNUM', n, detail))
   overview_urls <- c(overview_urls, gsub('PROJNUM', n, overview))
+  proj_nums <- c(proj_nums, n)
   # make lists into a dataframe
-  output <- data.frame(n, overview_urls)
+  print(n)
+  output <- data.frame(proj_nums, overview_urls)
+  #output <- data.frame(output)
 }
 
-detail_2009_h1 <- c() # do not remake, want to keep appending to this list
+#detail_2009_h1 <- c() # do not remake, want to keep appending to this list
 overview_2009_h1 <- c() # do not remake, want to keep appending to this list
 
-detail_2009_urls <- output[[1]][1:50] # update this index in increments of 500
-overview_2009_urls <- output[[2]][1:50] # update this index in increments of 500
+#detail_2009_urls <- output[[1]][1:50] # update this index in increments of 500
+overview_2009_urls <- output[[2]][1:5] # update this index in increments of 500
 
 for (url in detail_2009_urls) {
   u <- url
@@ -58,20 +62,39 @@ detail_2009 <- data.frame(detail_2009_h1)
 
 ## get the htmls available for each project
 overview_2009_htmls <- c()
+proj_names <- c()
+proj_htmls <- c()
+
+test_df <- data.frame(
+  proj_number = character(),
+  proj_name = character(),
+  pinyon_public = character(),
+  comments = character()
+)
+
 
 for (url in overview_2009_urls) {
   u <- url
   print(u)
-  proj_name <- read_html(u) %>%
+  names <- read_html(u) %>%
     html_elements("h1") %>%
     html_text2()
   htmls <- read_html(u) %>% 
     html_elements("a") %>%
     html_attr("href")
-  overview_2009_htmls <- c(overview_2009_htmls, proj_name, htmls)
+  overview_2009_htmls <- c(overview_2009_htmls, names, htmls)
+  #overview_2009_htmls <- data.frame(overview_2009_htmls)
+  #test_df <- data.frame(overview_2009_urls[[1,3,8]])
+    
+  proj_names <- c(proj_names, names)
 }
 
-htmls_2009 <- data.frame(overview_2009_htmls)
+test_htmls <- data.frame(overview_2009_htmls)
+test <- test_htmls %>% 
+  pivot_wider()
+
+test_names <- data.frame(proj_names)
+htmls_2009 <- data.frame(proj_names, overview_2009_htmls)
 
 detail_h1_out <- data.frame(detail_2009_h1)
 projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_2009_h1)
