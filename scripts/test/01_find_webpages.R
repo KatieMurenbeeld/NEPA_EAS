@@ -63,9 +63,9 @@ detail_2009 <- data.frame(detail_2009_h1)
 
 ## get the htmls available for each project
 overview_2009_htmls <- c()
-proj_names <- list()
-proj_htmls <- list()
-
+proj_names <- c()
+proj_htmls <- c()
+name_html <- c()
 
 for (url in overview_2009_urls) {
   u <- url
@@ -78,13 +78,17 @@ for (url in overview_2009_urls) {
     html_elements("a") %>%
     html_attr("href")
   print(htmls)
-  proj_names <- append(proj_names, names)
-  proj_htmls <- append(proj_htmls, htmls)
-  #overview_2009_htmls <- cbind(overview_2009_htmls, names, htmls)
+  proj_names <- c(proj_names, names)
+  proj_htmls <- c(proj_htmls, htmls)
+  name_html <- c(name_html, names, htmls)
+  test <- cbind(name_html)
+  overview_2009_htmls <- c(overview_2009_htmls, names, htmls)
 }
-test_df <- data.frame(cbind(proj_names, proj_htmls))
 
+test_df <- data.frame(test)
 test_htmls <- data.frame(overview_2009_htmls)
+
+
 test <- test_htmls %>% 
   pivot_wider()
 
