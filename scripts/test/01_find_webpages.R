@@ -54,16 +54,9 @@ overview_2009_urls <- output[[2]][1:5] # update this index in increments of 500
 
 for (url in overview_2009_urls) {
   u <- url
+  print(u)
   if(url.exists(u) == TRUE){
     print(u)
-    names <- read_html(u) %>%
-      html_elements("h1") %>%
-      html_text2()
-    print(names)
-    htmls <- read_html(u) %>% 
-      html_elements("a") %>%
-      html_attr("href")
-    print(htmls)
   }
   else {
     print("no project webpage")
