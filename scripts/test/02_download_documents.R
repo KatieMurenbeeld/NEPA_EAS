@@ -6,8 +6,14 @@ library(RSelenium)
 library(tidyverse)
 library(rvest)
 
-#rD <- rsDriver(browser="chrome", port=4545L, verbose=FALSE)
-#remDr <- rD[["client"]]
+#shell('docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.17.0-20240123')
+
+# in R terminal: username$ docker pull selenium/standalone-chrome
+remDr <- rsDriver(port = 4445L, browser = "chrome")
+
+remDr$open()
+
+remDr$navigate("https://www.fs.usda.gov/project/?project=57069&exp=overview")
 
 ## Had to install Docker...
 
