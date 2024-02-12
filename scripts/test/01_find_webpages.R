@@ -3,6 +3,7 @@ library(rvest)
 library(stringr)
 library(RSelenium)
 library(httr)
+library(RCurl)
 
 # Load the EA data csv
 projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_2009_purpose.csv")
@@ -67,6 +68,8 @@ proj_names <- c()
 proj_htmls <- c()
 name_html <- c()
 
+
+
 for (url in overview_2009_urls) {
   u <- url
   print(u)
@@ -77,7 +80,11 @@ for (url in overview_2009_urls) {
   htmls <- read_html(u) %>% 
     html_elements("a") %>%
     html_attr("href")
-  print(htmls)
+  #pinyon <- htmls %>%
+  #  html_elements("href") 
+  #print(pinyon)
+  #If the page exists we want the 1st link (second element [2]) which is the pinyon public folder
+  #print(htmls)
   proj_names <- c(proj_names, names)
   proj_htmls <- c(proj_htmls, htmls)
   name_html <- c(name_html, names, htmls)
