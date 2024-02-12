@@ -43,6 +43,7 @@ for(num in nums) {
   output <- data.frame(proj_nums, overview_urls)
   #output <- data.frame(output)
 }
+output <- data.frame(output)
 
 #detail_2009_h1 <- c() # do not remake, want to keep appending to this list
 overview_2009_h1 <- c() # do not remake, want to keep appending to this list
@@ -72,6 +73,12 @@ test_df <- data.frame(
   comments = character()
 )
 
+tmp_df <- data.frame(
+  proj_name = character(),
+  overview_url = character(),
+  htmls_avail = character()
+)
+
 
 for (url in overview_2009_urls) {
   u <- url
@@ -85,9 +92,14 @@ for (url in overview_2009_urls) {
   overview_2009_htmls <- c(overview_2009_htmls, names, htmls)
   #overview_2009_htmls <- data.frame(overview_2009_htmls)
   #test_df <- data.frame(overview_2009_urls[[1,3,8]])
-    
+  try(tmp_df <- data.frame(names, u, htmls))
+  try(tmp_df$proj_name <- names)
+  try(tmp_df$overview_url <- u)
+  try(tmp_df$htmls_avail <- htmls)
   proj_names <- c(proj_names, names)
 }
+test_df$proj_name <- proj_names
+tmp_df <- data.frame(names, u, htmls)
 
 test_htmls <- data.frame(overview_2009_htmls)
 test <- test_htmls %>% 
