@@ -52,15 +52,24 @@ overview_2009_h1 <- c() # do not remake, want to keep appending to this list
 #detail_2009_urls <- output[[1]][1:50] # update this index in increments of 500
 overview_2009_urls <- output[[2]][1:5] # update this index in increments of 500
 
-for (url in detail_2009_urls) {
+for (url in overview_2009_urls) {
   u <- url
-  print(u)
-  h1 <- read_html(u) %>% 
-    html_element("h1") %>%
-    html_text2()
-  detail_2009_h1 <- c(detail_2009_h1, h1)
+  if(url.exists(u) == TRUE){
+    print(u)
+    names <- read_html(u) %>%
+      html_elements("h1") %>%
+      html_text2()
+    print(names)
+    htmls <- read_html(u) %>% 
+      html_elements("a") %>%
+      html_attr("href")
+    print(htmls)
+  }
+  else {
+    print("no project webpage")
+  }
 }
-detail_2009 <- data.frame(detail_2009_h1)
+overview_2009 <- data.frame(detail_2009_h1)
 
 ## get the htmls available for each project
 overview_2009_htmls <- c()
