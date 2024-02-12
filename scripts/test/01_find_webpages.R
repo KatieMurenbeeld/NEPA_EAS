@@ -78,7 +78,11 @@ for (url in overview_2009_urls) {
   names <- read_html(u) %>%
     html_elements("h1") %>%
     html_text2()
-  print(names)
+  if (is_empty(names)) {
+    print("no project page")
+  } else {
+    print(names)
+  }
   htmls <- read_html(u) %>% 
     html_elements("a") %>%
     html_attr("href")
