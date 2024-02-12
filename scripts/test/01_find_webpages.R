@@ -63,21 +63,8 @@ detail_2009 <- data.frame(detail_2009_h1)
 
 ## get the htmls available for each project
 overview_2009_htmls <- c()
-proj_names <- c()
-proj_htmls <- c()
-
-test_df <- data.frame(
-  proj_number = character(),
-  proj_name = character(),
-  pinyon_public = character(),
-  comments = character()
-)
-
-tmp_df <- data.frame(
-  proj_name = character(),
-  overview_url = character(),
-  htmls_avail = character()
-)
+proj_names <- list()
+proj_htmls <- list()
 
 
 for (url in overview_2009_urls) {
@@ -86,20 +73,16 @@ for (url in overview_2009_urls) {
   names <- read_html(u) %>%
     html_elements("h1") %>%
     html_text2()
+  print(names)
   htmls <- read_html(u) %>% 
     html_elements("a") %>%
     html_attr("href")
-  overview_2009_htmls <- c(overview_2009_htmls, names, htmls)
-  #overview_2009_htmls <- data.frame(overview_2009_htmls)
-  #test_df <- data.frame(overview_2009_urls[[1,3,8]])
-  try(tmp_df <- data.frame(names, u, htmls))
-  try(tmp_df$proj_name <- names)
-  try(tmp_df$overview_url <- u)
-  try(tmp_df$htmls_avail <- htmls)
-  proj_names <- c(proj_names, names)
+  print(htmls)
+  proj_names <- append(proj_names, names)
+  proj_htmls <- append(proj_htmls, htmls)
+  #overview_2009_htmls <- cbind(overview_2009_htmls, names, htmls)
 }
-test_df$proj_name <- proj_names
-tmp_df <- data.frame(names, u, htmls)
+test_df <- data.frame(cbind(proj_names, proj_htmls))
 
 test_htmls <- data.frame(overview_2009_htmls)
 test <- test_htmls %>% 
