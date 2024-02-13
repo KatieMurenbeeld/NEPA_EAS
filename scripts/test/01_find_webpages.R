@@ -90,17 +90,20 @@ pals_facts <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/d
 
 pals_facts$NEPA_DOC_NBR <- as.character(pals_facts$NEPA_DOC_NBR)
 
-facts_url <- left_join(output, pals_facts, by = c("proj_nums" = "NEPA_DOC_NBR"))
+## Join to url data frame
+url_2_facts <- left_join(proj_url_df, pals_facts, by = c("PROJECT.NUMBER" = "NEPA_DOC_NBR"))
+facts_2_url <- left_join(pals_facts, proj_url_df, by = c("NEPA_DOC_NBR" = "PROJECT.NUMBER"))
 
 facts_df <- facts_url %>%
-  select(proj_nums, PROJECT.NAME, overview_urls, proj_url, pinyon_url, FOREST_ID, PROJECT.STATUS,
+  select(PROJECT.NUMBER, PROJECT.NAME.x, overview_urls, proj_url, pinyon_url, FOREST_ID, PROJECT.STATUS.x,
          PROJECT.CREATED, INITIATION.DATE, DECISION.SIGNED, DECISION.TYPE, APPEALED.OR.OBJECTED., LITIGATED., 
-         ELAPSED.DAYS, calendarYearInitiated, calendarYearSigned, NEPA_SIGNED_DATE, H, E, D, DATE_COMP_MIN, 
+         ELAPSED.DAYS, calendarYearInitiated.x, calendarYearSigned, NEPA_SIGNED_DATE, H, E, D, DATE_COMP_MIN, 
          DATE_COMP_MAX, PERCENT_PROJ_COMP, DATE_AWARD_MIN, DATE_AWARD_MAX, PROJECT_DUR_PLAN_YR, TOT_AREA_PLAN,
          NBR_ACTIVITIES, FIRE, RANGE, REC, TIMBER, SAW, WILDLIFE, RESTORE, MISC, ENGI, PROJ_RICHNESS, PROJ_DIVERSE, 
          PROJ_EVENNESS)
 
-write_csv(facts_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/facts_url.csv")
+# Save df to csv
+write_csv(facts_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/facts_url_2.csv")
 
 facts_sub_df <- facts_df %>%
   filter(proj_url != "no project webpage")
