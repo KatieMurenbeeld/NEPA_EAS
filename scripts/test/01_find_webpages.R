@@ -43,8 +43,6 @@ for(num in nums) {
 }
 #output <- data.frame(output)
 
-overview_2009_h1 <- c() # do not remake, want to keep appending to this list
-
 overview_2009_urls <- output[[2]]# update this index in increments of 500
 
 ## get the htmls available for each project
@@ -77,48 +75,16 @@ for (url in overview_2009_urls) {
   pinyon_list <- c(pinyon_list, pinyon)
 }
 
-#s <- session("https://usfs-public.app.box.com/v/PinyonPublic/folder/158109726766")
 
-#s <- s %>%
-#  session_follow_link()
-
-#output_5 <- output[1:5,]
 output$proj_url <- proj_names
 output$pinyon_url <- pinyon_list
 
-test <- test_htmls %>% 
-  pivot_wider()
+## Join the output data frame to the projs data frame by project number
+proj_url_df <- left_join(projs, output, by = c("PROJECT.NUMBER" = "proj_nums"))
 
-test_names <- data.frame(proj_names)
-htmls_2009 <- data.frame(proj_names, overview_2009_htmls)
+## Save df to csv
+write_csv(proj_url_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/project_url.csv")
 
-detail_h1_out <- data.frame(detail_2009_h1)
-projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], projs$calendarYearInitiated[1:500], detail_h1_out$detail_2009_h1)
-write.csv(projs_500, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/projs_500_2009_h1.csv")
-projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000], projs$calendarYearInitiated[1:1000], detail_h1_out$detail_h1)
-
-detail_2009_h1_out <- data.frame(detail_2009_h1)
-
-for (url in overview_2009_urls) {
-  u <- url
-  print(u)
-  h1 <- read_html(u) %>% 
-    html_element("h1") %>%
-    html_text2()
-  overview_2009_h1 <- c(overview_2009_h1, h1)
-}
-
-for (url in overview_2009_urls)
-
-overview_2009_h1_out <- data.frame(overview_2009_h1)
-projs_500 <- data.frame(projs$PROJECT.NUMBER[1:500], projs$PROJECT.NAME[1:500], 
-                        projs$calendarYearInitiated[1:500], detail_h1_out$detail_h1,
-                        overview_h1_out$overview_h1)
-projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000], 
-                        projs$calendarYearInitiated[1:1000], detail_h1_out$detail_h1,
-                        overview_h1_out$overview_h1)
-
-#projs_2009_all <- 
 
 # -----------------------
 # New rvest testing see https://www.zenrows.com/blog/web-scraping-r#retrieve-html 
