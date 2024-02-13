@@ -15,7 +15,6 @@ projs <- projs %>%
 # Add columns for the "overview" project page and the "detail" project page
 
 projs$overview <- NA
-projs$detail <- NA
 
 # Convert the PROJECT NUMBER to character string
 projs$PROJECT.NUMBER <- as.character(projs$PROJECT.NUMBER)
@@ -40,7 +39,7 @@ for(num in nums) {
   overview_urls <- c(overview_urls, gsub('PROJNUM', n, overview))
   proj_nums <- c(proj_nums, n)
   # make lists into a dataframe
-  print(n)
+  #print(n)
   output <- data.frame(proj_nums, overview_urls)
   #output <- data.frame(output)
 }
@@ -52,24 +51,12 @@ overview_2009_h1 <- c() # do not remake, want to keep appending to this list
 #detail_2009_urls <- output[[1]][1:50] # update this index in increments of 500
 overview_2009_urls <- output[[2]][1:5] # update this index in increments of 500
 
-for (url in overview_2009_urls) {
-  u <- url
-  print(u)
-  if(url.exists(u) == TRUE){
-    print(u)
-  }
-  else {
-    print("no project webpage")
-  }
-}
-overview_2009 <- data.frame(detail_2009_h1)
-
 ## get the htmls available for each project
 overview_2009_htmls <- c()
 proj_names <- c()
 proj_htmls <- c()
 name_html <- c()
-
+pinyon_list <- c()
 
 
 for (url in overview_2009_urls) {
@@ -79,13 +66,18 @@ for (url in overview_2009_urls) {
     html_elements("h1") %>%
     html_text2()
   if (is_empty(names)) {
-    print("no project page")
+    names <- "no project page"
+    #htmls <- character(0)
   } else {
-    print(names)
+    names <- names
+    htmls <- read_html(u) %>%
+      html_elements("a") %>%
+      html_attr("href")
+    pinyon <- htmls[2]
   }
-  htmls <- read_html(u) %>% 
-    html_elements("a") %>%
-    html_attr("href")
+ # htmls <- read_html(u) %>% 
+  #  html_elements("a") %>%
+  #  html_attr("href")
   #pinyon <- htmls %>%
   #  html_elements("href") 
   #print(pinyon)
@@ -93,6 +85,7 @@ for (url in overview_2009_urls) {
   #print(htmls)
   proj_names <- c(proj_names, names)
   proj_htmls <- c(proj_htmls, htmls)
+  pinyon_list <- c(pinyon_list, pinyon)
   name_html <- c(name_html, names, htmls)
   test <- cbind(name_html)
   overview_2009_htmls <- c(overview_2009_htmls, names, htmls)
