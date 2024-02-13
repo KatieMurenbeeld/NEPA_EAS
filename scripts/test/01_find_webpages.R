@@ -85,6 +85,23 @@ proj_url_df <- left_join(projs, output, by = c("PROJECT.NUMBER" = "proj_nums"))
 ## Save df to csv
 write_csv(proj_url_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/project_url.csv")
 
+## Read in the PALS-FACTS csv
+pals_facts <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/df_pals_comm_NEPA_init_2009_2018_noneg_allpurp_v02_c20221208.csv")
 
+pals_facts$NEPA_DOC_NBR <- as.character(pals_facts$NEPA_DOC_NBR)
 
+facts_url <- left_join(output, pals_facts, by = c("proj_nums" = "NEPA_DOC_NBR"))
+
+facts_df <- facts_url %>%
+  select(proj_nums, PROJECT.NAME, overview_urls, proj_url, pinyon_url, FOREST_ID, PROJECT.STATUS,
+         PROJECT.CREATED, INITIATION.DATE, DECISION.SIGNED, DECISION.TYPE, APPEALED.OR.OBJECTED., LITIGATED., 
+         ELAPSED.DAYS, calendarYearInitiated, calendarYearSigned, NEPA_SIGNED_DATE, H, E, D, DATE_COMP_MIN, 
+         DATE_COMP_MAX, PERCENT_PROJ_COMP, DATE_AWARD_MIN, DATE_AWARD_MAX, PROJECT_DUR_PLAN_YR, TOT_AREA_PLAN,
+         NBR_ACTIVITIES, FIRE, RANGE, REC, TIMBER, SAW, WILDLIFE, RESTORE, MISC, ENGI, PROJ_RICHNESS, PROJ_DIVERSE, 
+         PROJ_EVENNESS)
+
+write_csv(facts_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/facts_url.csv")
+
+facts_sub_df <- facts_df %>%
+  filter(proj_url != "no project webpage")
 
