@@ -66,5 +66,6 @@ ggplot(month_signed_counts, aes(x=month_signed, y=n)) +
 
 ggplot(month_signed_reg_counts, aes(x=month_signed, y=n, color=LMU...REGION)) +
   geom_bar(stat = "identity") +
-  facet_wrap(~LMU...REGION)
+  facet_wrap(~LMU...REGION) +
+  theme(legend.position = "none")
 
