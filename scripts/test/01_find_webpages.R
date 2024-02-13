@@ -83,7 +83,9 @@ output$pinyon_url <- pinyon_list
 proj_url_df <- left_join(projs, output, by = c("PROJECT.NUMBER" = "proj_nums"))
 
 ## Save df to csv
-write_csv(proj_url_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/project_url.csv")
+#write_csv(proj_url_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/project_url.csv")
+proj_url_df <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/project_url.csv")
+proj_url_df$PROJECT.NUMBER <- as.character(proj_url_df$PROJECT.NUMBER)
 
 ## Read in the PALS-FACTS csv
 pals_facts <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/df_pals_comm_NEPA_init_2009_2018_noneg_allpurp_v02_c20221208.csv")
@@ -94,8 +96,8 @@ pals_facts$NEPA_DOC_NBR <- as.character(pals_facts$NEPA_DOC_NBR)
 url_2_facts <- left_join(proj_url_df, pals_facts, by = c("PROJECT.NUMBER" = "NEPA_DOC_NBR"))
 facts_2_url <- left_join(pals_facts, proj_url_df, by = c("NEPA_DOC_NBR" = "PROJECT.NUMBER"))
 
-facts_df <- facts_url %>%
-  select(PROJECT.NUMBER, PROJECT.NAME.x, overview_urls, proj_url, pinyon_url, FOREST_ID, PROJECT.STATUS.x,
+facts_df <- url_2_facts %>%
+  select(PROJECT.NUMBER, PROJECT.NAME.x, LMU...REGION, overview_urls, proj_url, pinyon_url, FOREST_ID, PROJECT.STATUS.x,
          PROJECT.CREATED, INITIATION.DATE, DECISION.SIGNED, DECISION.TYPE, APPEALED.OR.OBJECTED., LITIGATED., 
          ELAPSED.DAYS, calendarYearInitiated.x, calendarYearSigned, NEPA_SIGNED_DATE, H, E, D, DATE_COMP_MIN, 
          DATE_COMP_MAX, PERCENT_PROJ_COMP, DATE_AWARD_MIN, DATE_AWARD_MAX, PROJECT_DUR_PLAN_YR, TOT_AREA_PLAN,
@@ -103,7 +105,7 @@ facts_df <- facts_url %>%
          PROJ_EVENNESS)
 
 # Save df to csv
-write_csv(facts_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/facts_url_2.csv")
+write_csv(facts_df, "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/facts_url_3.csv")
 
 facts_sub_df <- facts_df %>%
   filter(proj_url != "no project webpage")
