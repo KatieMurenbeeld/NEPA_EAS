@@ -35,27 +35,22 @@ nums <- projs$PROJECT.NUMBER
 for(num in nums) {
   n <- num 
   # append to your empty lists
-  #detail_urls <- c(detail_urls, gsub('PROJNUM', n, detail))
   overview_urls <- c(overview_urls, gsub('PROJNUM', n, overview))
   proj_nums <- c(proj_nums, n)
   # make lists into a dataframe
-  #print(n)
   output <- data.frame(proj_nums, overview_urls)
   #output <- data.frame(output)
 }
-output <- data.frame(output)
+#output <- data.frame(output)
 
-#detail_2009_h1 <- c() # do not remake, want to keep appending to this list
 overview_2009_h1 <- c() # do not remake, want to keep appending to this list
 
-#detail_2009_urls <- output[[1]][1:50] # update this index in increments of 500
-overview_2009_urls <- output[[2]][1:5] # update this index in increments of 500
+overview_2009_urls <- output[[2]]# update this index in increments of 500
 
 ## get the htmls available for each project
 overview_2009_htmls <- c()
 proj_names <- c()
 proj_htmls <- c()
-name_html <- c()
 pinyon_list <- c()
 
 
@@ -66,34 +61,30 @@ for (url in overview_2009_urls) {
     html_elements("h1") %>%
     html_text2()
   if (is_empty(names)) {
-    names <- "no project page"
-    #htmls <- character(0)
+    names <- "no project webpage"
+    htmls <- character(0)
+    pinyon <- "no pinyon public link"
   } else {
-    names <- names
+    names <- u
     htmls <- read_html(u) %>%
       html_elements("a") %>%
       html_attr("href")
     pinyon <- htmls[2]
   }
- # htmls <- read_html(u) %>% 
-  #  html_elements("a") %>%
-  #  html_attr("href")
-  #pinyon <- htmls %>%
-  #  html_elements("href") 
-  #print(pinyon)
-  #If the page exists we want the 1st link (second element [2]) which is the pinyon public folder
-  #print(htmls)
   proj_names <- c(proj_names, names)
+  #str_remove_all(proj_names, "\r")
   proj_htmls <- c(proj_htmls, htmls)
   pinyon_list <- c(pinyon_list, pinyon)
-  name_html <- c(name_html, names, htmls)
-  test <- cbind(name_html)
-  overview_2009_htmls <- c(overview_2009_htmls, names, htmls)
 }
 
-test_df <- data.frame(test)
-test_htmls <- data.frame(overview_2009_htmls)
+#s <- session("https://usfs-public.app.box.com/v/PinyonPublic/folder/158109726766")
 
+#s <- s %>%
+#  session_follow_link()
+
+#output_5 <- output[1:5,]
+output$proj_url <- proj_names
+output$pinyon_url <- pinyon_list
 
 test <- test_htmls %>% 
   pivot_wider()
@@ -134,6 +125,8 @@ projs_1000 <- data.frame(projs$PROJECT.NUMBER[1:1000], projs$PROJECT.NAME[1:1000
 # retrieving the target web page 
 document <- read_html("https://www.fs.usda.gov/project/?project=57069&exp=overview")
 
+pin_doc <- read_html("https://usfs-public.app.box.com/v/PinyonPublic/folder/158109726766")
+
 doc_html <- read_html("https://www.fs.usda.gov/project/?project=57069&exp=overview") %>% toString()
 
 # selecting the list of product HTML elements 
@@ -146,6 +139,10 @@ test[c(2,7)]
 html_divs <- document %>% html_elements("div") 
 
 document %>% html_elements("iframe") 
+
+pin_doc %>% html_element("iframe.")
+
+pin_doc %>% html_nodes("iframe") %>% html_attr("src")
 
 document %>% html_elements("html") %>% html_attrs("href")
 
