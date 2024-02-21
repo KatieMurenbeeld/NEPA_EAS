@@ -5,6 +5,7 @@
 library(RSelenium)
 library(tidyverse)
 library(rvest)
+library(chromote)
 
 #shell('docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.17.0-20240123')
 
@@ -79,8 +80,27 @@ doc_html %>% str_match("iframe")
 
 doc_text <- document %>% html_text2()
 
-# ------------------------------------
-# bread crumb: test with RSelenium
+########## Breadcrumb: test with RSelenium #####
 
-rD <- rsDriver(browser = "chrome",
-               chromever = 121.0.6167.139)
+#rD <- rsDriver(browser = "chrome",
+#               chromever = 121.0.6167.139)
+
+######## Breadcrumb: rvest with live html (chromote) ####
+
+facts_urls <- read.csv("data/processed/facts_url_3.csv")
+
+pinyon_urls <- facts_urls %>%
+  filter(pinyon_url != "no pinyon public link") %>%
+  select(pinyon_url)
+
+s <- session(pinyon_urls[1,])
+
+# Need to download rvest from developer? read_html_live() is experimental
+sess <- read_html_live(pinyon_urls[1,])
+
+b <- ChromoteSession$new()
+
+b$Page$navigate(pinyon_urls[1,])
+
+x <- b$DOM$getDocument()
+
