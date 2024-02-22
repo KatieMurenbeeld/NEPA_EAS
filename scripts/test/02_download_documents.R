@@ -6,6 +6,7 @@ library(RSelenium)
 library(tidyverse)
 library(rvest)
 library(chromote)
+library(selenider)
 
 #shell('docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.17.0-20240123')
 
@@ -102,5 +103,28 @@ b <- ChromoteSession$new()
 
 b$Page$navigate(pinyon_urls[1,])
 
+b$Browser$setDownloadBehavior(behavior = "allow", 
+                              downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
+
 x <- b$DOM$getDocument()
 
+x = 160 ## horizontal X coordinate of the button relative to the main frame's viewport in CSS pixels; 
+y = 40 ## vertical Y coordinate of the buttonrelative to the main frame's viewport in CSS pixels. 0 refers to the top of the viewport and Y increases as it proceeds towards the bottom of the viewport;
+
+b$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1) # clickCount=Number of times the mouse button was clicked, 1= normal click, 2 = double-click
+b$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1) # see: https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
+
+
+####### Testing out selenider #####
+
+open_url(pinyon_urls[1,])
+
+s(css = '*') %>%
+  find_elements("button") %>%
+  elem_find(has_text("bulkdownload")) %>%
+  elem_click(js=TRUE, timeout=60)
+  
+  
+  
+  
+  
