@@ -30,10 +30,12 @@ for (i in pinyon_urls[1:3,]) {
 }
 
 for (i in pinyon_urls[1:3,]) {
-  b1$Page$navigate(i)
+  tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
+  tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
+  tmp$Page$navigate(i)
   Sys.sleep(runif(1, 3, 4))
-  b1$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1)
-  b1$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1) # see: https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
+  tmp$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1)
+  tmp$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1) # see: https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
 }
 ####^^The code above worked!!!!^^##
 
