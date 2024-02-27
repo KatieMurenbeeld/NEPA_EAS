@@ -94,10 +94,32 @@ pinyon_urls <- facts_urls %>%
   filter(pinyon_url != "no pinyon public link") %>%
   select(pinyon_url)
 
-s <- session(pinyon_urls[1,])
+s <- session("https://usfs-public.app.box.com/v/PinyonPublic/folder/246700028568")
+
+####This Code Worked!!!#####
+b <- ChromoteSession$new(wait_ = TRUE)
+b1 <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
+b1$Page$navigate("https://usfs-public.app.box.com/v/PinyonPublic/folder/246700028568")
+#test <- b1$Page$navigate("https://usfs-public.app.box.com/v/PinyonPublic/folder/246700028568")
+Sys.sleep(runif(1, 3, 4))
+b1$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
+x <- 1650
+y <- 100
+  
+b1$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1) 
+b1$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1) # see: https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
+####^^The code above worked!!!!^^##
 
 # Need to download rvest from developer? read_html_live() is experimental
-sess <- read_html_live(pinyon_urls[1,])
+## It was updated!!
+sess <- read_html_live("https://usfs-public.app.box.com/v/PinyonPublic/folder/246700028568")
+#sess$view()
+
+test <- sess %>% html_elements(".base-button-module_button__TsfJa.base-button-module_secondary__sRO2F")
+test[1]
+test[2]
+
+sess$click(test[2])
 
 b <- ChromoteSession$new()
 
@@ -123,8 +145,6 @@ s(css = '*') %>%
   find_elements("button") %>%
   elem_find(has_text("bulkdownload")) %>%
   elem_click(js=TRUE, timeout=60)
-  
-  
   
   
   
