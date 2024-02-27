@@ -12,6 +12,9 @@ pinyon_urls <- facts_urls %>%
 ### will need to find the x and y position of the download button
 ### within the console of the webpage developer (after right-click inspect or F12)
 ### use this java code to get a rough estimate of the x and y 
+### it will add a little popup over your cursor that shows the x and y
+### in this case the y (distance from top of page) is fairly constant despite the size of the browser window
+### and x seems to be about 50 pixels from the right side of the browser window
 ####document.onmousemove = function(e){
 ####  var x = e.pageX;
 ####  var y = e.pageY;
@@ -22,10 +25,10 @@ pinyon_urls <- facts_urls %>%
 #### https://chromedevtools.github.io/devtools-protocol/tot/Browser/
 
 b <- ChromoteSession$new(wait_ = TRUE)
-x <- 1650
+x <- 1650 # 50 pixels less than the width of the browser set in the for loop
 y <- 100
 
-for (i in pinyon_urls[1:3,]) {
+for (i in pinyon_urls[4:30,]) {
   tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
   tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
   tmp$Page$navigate(i)
