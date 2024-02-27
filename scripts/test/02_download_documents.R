@@ -30,9 +30,9 @@ for (i in pinyon_urls[1:3,]) {
 }
 
 for (i in pinyon_urls[1:3,]) {
-  b1$Page$navigate(i) %>%
-    {b1$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1)} %>%
-    {b1$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1)} # see: https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
+  b1$Page$navigate(i)
+  b1$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1)
+  b1$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1) # see: https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
 }
 ####^^The code above worked!!!!^^##
 
