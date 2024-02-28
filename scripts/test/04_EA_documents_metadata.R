@@ -9,12 +9,19 @@ library(ggplot2)
 
 folder_list <- list.dirs( path = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS", full.names = TRUE, recursive = FALSE)
 
-
+meta_data <- data.frame(project_num=as.character(),
+                        prescoping=as.numeric(),
+                        scoping=as.numeric(),
+                        supporting=as.numeric(),
+                        analysis=as.numeric(),
+                        assessment=as.numeric(),
+                        decision=as.numeric(), 
+                        appeals=as.numeric())
 
 for (i in folder_list[1:3]) {
   #print(paste0(i, "/"))
   tmp <- list.files(path = paste0(i, "/"), pattern = ".pdf", recursive = TRUE)
-  project_num <- str_extract(folder_list[1], "(?<=\\().+?(?=\\))") 
+  project_num <- str_extract(i, "(?<=\\().+?(?=\\))") 
   prescoping <- length(str_subset(tmp, "/Pre-Scoping/"))
   scoping <- length(str_subset(tmp, "/Scoping/"))
   supporting <- length(str_subset(tmp, "Supporting"))
