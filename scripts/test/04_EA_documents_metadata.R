@@ -9,14 +9,7 @@ library(ggplot2)
 
 folder_list <- list.dirs( path = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS", full.names = TRUE, recursive = FALSE)
 
-meta_data <- data.frame(project_num=as.character(),
-                        prescoping=as.numeric(),
-                        scoping=as.numeric(),
-                        supporting=as.numeric(),
-                        analysis=as.numeric(),
-                        assessment=as.numeric(),
-                        decision=as.numeric(), 
-                        appeals=as.numeric())
+meta_data <- data.frame()
 
 for (i in folder_list[1:3]) {
   #print(paste0(i, "/"))
@@ -32,9 +25,9 @@ for (i in folder_list[1:3]) {
   output <- c(project_num, prescoping, scoping, supporting, analysis, assessment, decision, appeals)
   meta_data <- rbind(meta_data, output)
 }
+colnames(meta_data) <- c("Project_Number", "Prescoping", "Scoping", "Supporting", "Analysis", "Assessment", "Decision", "Appeals")
 
 # rename all documents with project number and document type in the file name
 
 
-str_extract(folder_list[1], "(?<=\\().+?(?=\\))")
 
