@@ -23,6 +23,7 @@ folder_list <- list.dirs( path = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/
 for (n in folder_list){
   tmp <- list.files(path = paste0(n, "/"), pattern = ".pdf", recursive = TRUE)
   project_num <- str_extract(n, "(?<=\\().+?(?=\\))") 
+  # if project number already in meta_data df then skip
   prescoping <- length(str_subset(tmp, "/Pre-Scoping/"))
   scoping <- length(str_subset(tmp, "/Scoping/"))
   supporting <- length(str_subset(tmp, "Supporting"))
