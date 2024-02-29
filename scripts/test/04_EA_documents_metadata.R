@@ -1,3 +1,4 @@
+library(here)
 library(tidyverse)
 library(stringr)
 library(ggplot2)
@@ -43,6 +44,11 @@ colnames(meta_data) <- c("Project_Number", "Prescoping", "Scoping", "Supporting"
 # So that appeals documents don't get counted twice
 meta_data <- meta_data %>%
   mutate(Postdecision = Postdecision - Postdecision_Appeals)
+
+## write meta_data to a csv
+write_csv(meta_data, here::here(paste0("data/processed/", Sys.Date(), "_metadata_29-projects.csv")))
+
+files <- list.files(outdir, pattern = ".pdf", recursive = TRUE)
 
 # rename all documents with project number and document type in the file name
 
