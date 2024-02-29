@@ -15,7 +15,7 @@ zip_list <- list.files(path = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/ori
 
 meta_data <- data.frame()
 
-for (i in zip_list[1:3]) {
+for (i in zip_list) {
   print(i)
   unzip(paste0(outdir, "/", i), exdir = outdir)
 }
@@ -24,19 +24,25 @@ for (n in folder_list){
   tmp <- list.files(path = paste0(n, "/"), pattern = ".pdf", recursive = TRUE)
   project_num <- str_extract(n, "(?<=\\().+?(?=\\))") 
   # if project number already in meta_data df then skip
-  prescoping <- length(str_subset(tmp, "/Pre-Scoping/"))
-  scoping <- length(str_subset(tmp, "/Scoping/"))
-  supporting <- length(str_subset(tmp, "Supporting"))
-  analysis <- length(str_subset(tmp, "Analysis"))
-  assessment <- length(str_subset(tmp, "Assessment"))
-  decision <- length(str_subset(tmp, "Decision"))
-  appeals <- length(str_subset(tmp, "Appeals"))
-  output <- c(project_num, prescoping, scoping, supporting, analysis, assessment, decision, appeals)
-  meta_data <- rbind(meta_data, output)
+  prescoping <- length(str_subset(tmp, "Pre-Scoping/"))
+  scoping <- length(str_subset(tmp, "Scoping/"))
+  supporting <- length(str_subset(tmp, "Supporting/"))
+  analysis <- length(str_subset(tmp, "Analysis/"))
+  assessment <- length(str_subset(tmp, "Assessment/"))
+  decision <- length(str_subset(tmp, "Decision/"))
+  postdecision <- length(str_subset(tmp, "Post-Decision/"))
+  appeals <- length(str_subset(tmp, "Post-Decision/Appeals/"))
+  output <- c(project_num, prescoping, scoping, supporting, analysis, assessment, decision, postdecision, appeals)
+  meta_data <- rbind(meta_data, as.numeric(output))
 }
 
-colnames(meta_data) <- c("Project_Number", "Prescoping", "Scoping", "Supporting", "Analysis", "Assessment", "Decision", "Appeals")
+colnames(meta_data) <- c("Project_Number", "Prescoping", "Scoping", "Supporting", "Analysis", "Assessment", "Decision", "Postdecision", "Postdecision_Appeals")
 
+# Not all post decision documents are appeals
+# Subtract the postdecision from the postdecision_appeals
+# So that appeals documents don't get counted twice
+meta_data <- meta_data %>%
+  mutate(Postdecision = Postdecision - Postdecision_Appeals)
 
 # rename all documents with project number and document type in the file name
 
