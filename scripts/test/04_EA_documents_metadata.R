@@ -4,7 +4,7 @@ library(stringr)
 library(ggplot2)
 
 # set output directory
-outdir <- "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS"
+outdir <- here::here("/data/original/NEPA_DOCS")
 # for each project
 ## unzip documents
 ## count total documents and documents by type (based on folder names)
@@ -15,6 +15,9 @@ zip_list <- list.files(path = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/ori
 #unzip(paste0(outdir, "/", zip_list[1]), exdir = outdir)
 
 meta_data <- data.frame()
+
+# May want to make a list of key words to search for if projects not organized correctly
+#grep_list <- c("")
 
 for (i in zip_list) {
   print(i)
@@ -50,7 +53,7 @@ write_csv(meta_data, here::here(paste0("data/processed/", Sys.Date(), "_metadata
 
 files <- list.files(outdir, pattern = ".pdf", recursive = TRUE)
 
-# rename all documents with project number and document type in the file name
+# rename all documents with project number and document type in the file name?
 
 
 
