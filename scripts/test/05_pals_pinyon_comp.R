@@ -14,31 +14,45 @@ pals_pin_new <- left_join(pinpub_meta, pals_new, by = c("Project_Number" = "PROJ
 
 mean(pals_pin_new$Total_Files)
 median(pals_pin_new$Total_Files)
+sd(pals_pin_new$Total_Files)
+min(pals_pin_new$Total_Files)
+max(pals_pin_new$Total_Files)
 
-
-#----Histograms----
+#----Histogram and bar chart----
 
 ggplot(pals_pin_new) +
   geom_histogram(aes(Total_Files), bins = 50) 
-
-column_names = c("Total_Files", "Prescoping", "Scoping", "Supporting", "Analysis", "Assessment", "Decision", "Postdecision", "Postdecision_Appeals")
 
 counts <- as.data.frame(colSums(pinpub_meta))
 counts <- cbind(Doc_Type = rownames(counts), counts)
 counts <- counts[-1,]
 
 ggplot(counts) + 
-  geom_col(aes(x = Doc_Type, y = `colSums(pinpub_meta)`)) + 
+  geom_col(aes(x = Doc_Type, y = `colSums(pinpub_meta)`, fill = Doc_Type)) + 
   theme(axis.text.x = element_text(angle = 90))
   
-
-
-#----Scatter Plots: Elapsed Days by Total Document Count----
+#----Scatter Plots----
 
 ggplot(pals_pin_new) +
-  geom_point(aes(x = Total_Files, y = ELAPSED.DAYS, color = LITIGATED.)) + 
+  geom_point(aes(x = Total_Files, y = ELAPSED.DAYS, color = as.factor(LITIGATED.))) + 
+  labs(color = "Litigated") +
   scale_y_log10()
 
 ggplot(pals_pin_new) +
-  geom_point(aes(x = Total_Files, y = ELAPSED.DAYS, color = APPEALED.OR.OBJECTED.)) + 
+  geom_point(aes(x = Total_Files, y = ELAPSED.DAYS, color = as.factor(APPEALED.OR.OBJECTED.))) + 
+  labs(color = "Appealed") +
   scale_y_log10()
+
+ggplot(pals_pin) +
+  geom_point(aes(x = Total_Files, y = PROJECT_DUR_PLAN_YR, color = as.factor(APPEALED.OR.OBJECTED.))) +
+  labs(color = "Appealed")
+
+ggplot(pals_pin) +
+  geom_point(aes(x = Total_Files, y = NBR_ACTIVITIES, color = as.factor(APPEALED.OR.OBJECTED.))) +
+  labs(color = "Appealed") 
+
+ggplot(pals_pin) +
+  geom_point(aes(x = Total_Files, y = TOT_AREA_PLAN, color = as.factor(APPEALED.OR.OBJECTED.))) +
+  labs(color = "Appealed")
+
+
