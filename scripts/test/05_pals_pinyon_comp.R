@@ -23,6 +23,9 @@ max(pals_pin_new$Total_Files)
 ggplot(pals_pin_new) +
   geom_histogram(aes(Total_Files), bins = 50) 
 
+ggplot(pals_pin_new) +
+  geom_histogram(aes(ELAPSED.DAYS), bins = 30) 
+
 counts <- as.data.frame(colSums(pinpub_meta))
 counts <- cbind(Doc_Type = rownames(counts), counts)
 counts <- counts[-1,]
@@ -53,6 +56,13 @@ ggplot(pals_pin) +
 
 ggplot(pals_pin) +
   geom_point(aes(x = Total_Files, y = TOT_AREA_PLAN, color = as.factor(APPEALED.OR.OBJECTED.))) +
-  labs(color = "Appealed")
+  labs(color = "Appealed") + 
+  scale_y_log10()
+
+ggplot(pals_pin) +
+  geom_point(aes(x = Total_Files, y = PROJ_EVENNESS, color = as.factor(APPEALED.OR.OBJECTED.))) +
+  labs(color = "Appealed") + 
+  scale_x_log10() + 
+  scale_y_log10()
 
 
