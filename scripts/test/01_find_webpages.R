@@ -6,7 +6,7 @@ library(httr)
 library(RCurl)
 
 # Load the EA data csv
-projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_2009_purpose.csv")
+projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_01-2009_03-2023_purpose.csv")
 
 # Filter out the grazing and mining
 projs <- projs %>%
