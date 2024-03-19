@@ -55,7 +55,7 @@ proj_htmls <- c()
 pinyon_list <- c()
 
 
-for (url in overview_2009_urls) {
+for (url in overview_2009_urls[2001:3000]) {
   u <- url
   print(u)
   names <- read_html(u) %>%
@@ -78,6 +78,12 @@ for (url in overview_2009_urls) {
   pinyon_list <- c(pinyon_list, pinyon)
 }
 
+df <- map2_dfr(pinyon_list, proj_names, ~ tibble(Pinyon_url = .x, Overview_url = .y))
+
+write.csv(df, here::here("data/processed/pinyon_url_list.csv"), append = TRUE)
+
+#pinyon_list_1_1000 <- pinyon_list
+#pinyon_list_1001_2000 <- pinyon_list
 
 output$proj_url <- proj_names
 output$pinyon_url <- pinyon_list
