@@ -54,4 +54,43 @@ reg8 <- st_read(here::here("data/original/Actv_CommonAttribute_PL_Region08.gdb")
 reg9 <- st_read(here::here("data/original/Actv_CommonAttribute_PL_Region09.gdb"), 
                 query = "SELECT * from Actv_CommonAttribute_PL WHERE FISCAL_YEAR_PLANNED > 2005")
 
+facts_proj_lst <- c()
+
+x <- c(reg1, reg2, reg3, reg4, reg5, reg6, reg8, reg9)
+
+#for (i in x) {
+#  proj <- unique(i$NEPA_DOC_NBR)
+#  facts_proj_lst <- append(facts_proj_lst, list(proj))
+#}
+# I want to make a loop for this as well
+proj1 <- unique(reg1$NEPA_DOC_NBR)
+proj2 <- unique(reg2$NEPA_DOC_NBR)
+proj3 <- unique(reg3$NEPA_DOC_NBR)
+proj4 <- unique(reg4$NEPA_DOC_NBR)
+proj5 <- unique(reg5$NEPA_DOC_NBR)
+proj6 <- unique(reg6$NEPA_DOC_NBR)
+proj8 <- unique(reg8$NEPA_DOC_NBR)
+proj9 <- unique(reg9$NEPA_DOC_NBR)
+
+facts_proj_lst <- append(facts_proj_lst, c(proj1, proj2, proj3, proj4, proj5, proj6, proj8, proj9))
+
+# Filter the pals ongoing data for project numbers in the facts project list (facts_proj_lst)
+pals_facts <- pals_ongoing %>%
+  filter(as.character(`PROJECT NUMBER`) %in% facts_proj_lst) 
+           
+
+pals_facts$`DECISION SIGNED` <- as.Date.character(pals_facts$`DECISION SIGNED`, format = "%m/%d/%Y")
+
+pals_facts_2009 <- filter(pals_facts, `DECISION SIGNED` > as.Date("2009-01-01"))
+
+write.csv(pals_facts_2009, file = here::here("data/processed/pals-in-facts_2009.csv"))
+
+
+
+
+
+
+
+
+
 
