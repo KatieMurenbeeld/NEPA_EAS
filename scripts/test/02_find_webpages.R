@@ -5,16 +5,19 @@ library(RSelenium)
 library(httr)
 library(RCurl)
 
+options(timeout = 3600)
+
 # Load the EA data csv
-projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_01-2009_03-2023_purpose.csv")
+#projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_01-2009_03-2023_purpose.csv")
+projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/pals-in-facts_2009.csv")
 
 # Filter out the grazing and mining
-projs <- projs %>%
-  filter(TM.Forest.products...purpose == 1 | HF.Fuels.management...purpose == 1 | VM.Vegetation.management..non.forest.products....purpose == 1)
+#projs <- projs %>%
+#  filter(TM.Forest.products...purpose == 1 | HF.Fuels.management...purpose == 1 | VM.Vegetation.management..non.forest.products....purpose == 1)
 
 # Add columns for the "overview" project page and the "detail" project page
 
-projs$overview <- NA
+#projs$overview <- NA
 
 # Convert the PROJECT NUMBER to character string
 projs$PROJECT.NUMBER <- as.character(projs$PROJECT.NUMBER)
