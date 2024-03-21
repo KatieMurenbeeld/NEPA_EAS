@@ -11,6 +11,7 @@ options(timeout = 3600)
 #projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/eas_proj_01-2009_03-2023_purpose.csv")
 projs <- read.csv("/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/processed/pals-in-facts_2009.csv")
 
+
 # Filter out the grazing and mining
 #projs <- projs %>%
 #  filter(TM.Forest.products...purpose == 1 | HF.Fuels.management...purpose == 1 | VM.Vegetation.management..non.forest.products....purpose == 1)
@@ -42,9 +43,18 @@ for(num in nums) {
   proj_nums <- c(proj_nums, n)
   # make lists into a dataframe
   output <- data.frame(proj_nums, overview_urls)
-  #output <- data.frame(output)
 }
-#output <- data.frame(output)
+
+# Combine the output dataframe with the pinyon_url dataframe (the pinyon_url csv
+# was created using the same code from lines 63-88 but on Borah)
+pinyon_url <- read.csv(here::here("data/processed/pinyon_url_list.csv"))
+pinyon_url$project_number <- output$proj_nums
+pinyon_url <- pinyon_url %>%
+  select(-X)
+
+write_csv(pinyon_url, here::here("data/processed/projects_pinyon_2009.csv"))
+
+#---Loop to create the dataframe with pinyon and project overview urls----------
 
 overview_2009_urls <- output[[2]]# update this index in increments of 500
 
@@ -80,7 +90,7 @@ for (url in overview_2009_urls[2001:3000]) {
 
 df <- map2_dfr(pinyon_list, proj_names, ~ tibble(Pinyon_url = .x, Overview_url = .y))
 
-write.csv(df, here::here("data/processed/pinyon_url_list.csv"), append = TRUE)
+#write.csv(df, here::here("data/processed/pinyon_url_list.csv"), append = TRUE)
 
 #pinyon_list_1_1000 <- pinyon_list
 #pinyon_list_1001_2000 <- pinyon_list
