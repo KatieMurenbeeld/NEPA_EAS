@@ -2,11 +2,11 @@ library(tidyverse)
 library(rvest)
 library(chromote)
 
-facts_urls <- read.csv("data/processed/facts_url_3.csv")
+facts_urls <- read.csv(here::here("data/processed/projects_pinyon_2009.csv"))
 
 pinyon_urls <- facts_urls %>%
-  filter(pinyon_url != "no pinyon public link") %>%
-  select(pinyon_url)
+  filter(Pinyon_url != "no pinyon public link") %>%
+  select(Pinyon_url, project_number)
 
 ## Use chromote as a headless browser with R to navigate to a url and click on the download button
 ### will need to find the x and y position of the download button
@@ -28,7 +28,7 @@ b <- ChromoteSession$new(wait_ = TRUE)
 x <- 1650 # 50 pixels less than the width of the browser set in the for loop
 y <- 100
 
-for (i in pinyon_urls[4:30,]) {
+for (i in pinyon_urls[31:60,1]) {
   tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
   tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
   tmp$Page$navigate(i)
@@ -37,5 +37,9 @@ for (i in pinyon_urls[4:30,]) {
   tmp$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1)
 }
 
-  
-  
+tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
+tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
+tmp$Page$navigate(pinyon_urls[1,1])
+Sys.sleep(runif(1, 3, 4))
+tmp$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1)
+tmp$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1)
