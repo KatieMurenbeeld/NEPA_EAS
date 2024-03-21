@@ -37,9 +37,3 @@ for (i in pinyon_urls[31:60,1]) {
   tmp$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1)
 }
 
-tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
-tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
-tmp$Page$navigate(pinyon_urls[1,1])
-Sys.sleep(runif(1, 3, 4))
-tmp$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button="left", clickCount=1)
-tmp$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button="left", clickCount=1)
