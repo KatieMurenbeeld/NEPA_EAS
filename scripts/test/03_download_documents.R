@@ -16,6 +16,9 @@ pinyon_eas <- pinyon_pals %>%
   filter(DECISION.TYPE == "DN")
 min(pinyon_eas$calendarYearSigned)
 
+pinyon_eas_urls <- pinyon_eas %>%
+  filter(grepl("https://usfs-public.app.box.com/v", pinyon_eas[,1]) == TRUE)
+
 ## Use chromote as a headless browser with R to navigate to a url and click on the download button
 ### will need to find the x and y position of the download button
 ### within the console of the webpage developer (after right-click inspect or F12)
@@ -36,7 +39,7 @@ b <- ChromoteSession$new(wait_ = TRUE)
 x <- 1650 # 50 pixels less than the width of the browser set in the for loop
 y <- 100
 
-for (i in pinyon_eas[,1]) {
+for (i in pinyon_eas_urls[,1]) {
   tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
   tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
   tmp$Page$navigate(i)
