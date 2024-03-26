@@ -2,11 +2,19 @@ library(tidyverse)
 library(rvest)
 library(chromote)
 
+pals <- read.csv(here::here("data/processed/pals-in-facts_2009.csv"))
 facts_urls <- read.csv(here::here("data/processed/projects_pinyon_2009.csv"))
 
 pinyon_urls <- facts_urls %>%
   filter(Pinyon_url != "no pinyon public link") %>%
   select(Pinyon_url, project_number)
+pinyon_urls$project_number <- as.character(pinyon_urls$project_number)
+
+pals$PROJECT.NUMBER <- as.character(pals$PROJECT.NUMBER)
+pinyon_pals <- left_join(pinyon_urls, pals, by = c("project_number" = "PROJECT.NUMBER"))
+pinyon_eas <- pinyon_pals %>%
+  filter(DECISION.TYPE == "DN")
+min(pinyon_eas$calendarYearSigned)
 
 ## Use chromote as a headless browser with R to navigate to a url and click on the download button
 ### will need to find the x and y position of the download button
@@ -28,7 +36,7 @@ b <- ChromoteSession$new(wait_ = TRUE)
 x <- 1650 # 50 pixels less than the width of the browser set in the for loop
 y <- 100
 
-for (i in pinyon_urls[31:60,1]) {
+for (i in pinyon_eas[,1]) {
   tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
   tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
   tmp$Page$navigate(i)
