@@ -35,11 +35,14 @@ pinyon_eas_urls <- pinyon_eas %>%
 ### see the Chrome dev tools protocol especially the Page, Browser and Input domains 
 #### https://chromedevtools.github.io/devtools-protocol/tot/Browser/
 
+# Check number of zip files downloaded
+length(list.files(here::here("data/original/NEPA_DOCS/")))
+
 b <- ChromoteSession$new(wait_ = TRUE)
 x <- 1650 # 50 pixels less than the width of the browser set in the for loop
 y <- 100
 
-for (i in pinyon_eas_urls[,1]) {
+for (i in pinyon_eas_urls[1312:1803,1]) { # update index based on number of zip files downloaded.
   tmp <- b$new_session(width = 1700, height = 1800, wait_ = TRUE)
   tmp$Browser$setDownloadBehavior("allow", downloadPath = "/Users/katiemurenbeeld/Analysis/NEPA_EAs/data/original/NEPA_DOCS/")
   tmp$Page$navigate(i)
