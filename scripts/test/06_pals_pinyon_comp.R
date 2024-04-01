@@ -30,8 +30,8 @@ pals_pin_meta <- pals_pin_on %>%
          `DECISION SIGNED`, `DECISION TYPE`, `APPEALED OR OBJECTED?`, 
          `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, COMMENTS_FILED)
 
-write_csv(pals_pin_on, paste0(here::here("data/processed/ea_eis_metadata.csv")), 
-          col_names = TRUE, append = TRUE)
+write_csv(pals_pin_meta, paste0(here::here("data/processed/ea_eis_metadata.csv")), 
+          col_names = TRUE)
 
 # Write code to append to google sheet
 
