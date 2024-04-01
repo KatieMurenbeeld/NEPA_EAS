@@ -3,14 +3,37 @@ library(tidyverse)
 library(stringr)
 library(ggplot2)
 
-pinpub_meta <- read.csv(here::here("data/processed/03-11-2024_metadata_29-projects.csv"))
+pinpub_meta <- read.csv(here::here("data/processed/04-01-2024_metadata_EAs.csv"))
 
 pals_df <- read.csv(here::here("data/original/df_pals_comm_NEPA_init_2009_2018_noneg_allpurp_v02_c20221208.csv"))
 pals_new <- read.csv('https://conservancy.umn.edu/bitstream/handle/11299/211669/pals_ongoing_projects_11-2022.csv?sequence=42&isAllowed=y', sep = ";")
+pals_ongoing <- readRDS("~/Analysis/NEPA_EAs/scripts/pals_ongoing_projects_thru_3-2023.rds")
 
-pals_pin <- left_join(pinpub_meta, pals_df, by = c("Project_Number" = "NEPA_DOC_NBR"))
+pals_pin <- left_join(pinpub_meta, pals_df, 
+                      by = c("Project_Number" = "NEPA_DOC_NBR"))
 
-pals_pin_new <- left_join(pinpub_meta, pals_new, by = c("Project_Number" = "PROJECT.NUMBER"))
+pals_pin_new <- left_join(pinpub_meta, pals_new, 
+                          by = c("Project_Number" = "PROJECT.NUMBER"))
+
+pals_pin_on <- left_join(pinpub_meta, pals_ongoing, 
+                         by = c("Project_Number" = "PROJECT NUMBER"))
+
+# Create metadata file
+
+vars <- c("Project Number", "Total_Files", "PROJECT NAME", 
+          "LMU - REGION", "FOREST_ID", "PROJECT STATUS",
+          "DECISION SIGNED", "DECISION TYPE")
+
+pals_pin_meta <- pals_pin_on %>%
+  select(Project_Number, Total_Files, `PROJECT NAME`, 
+         REGION_ID, FOREST_ID, `PROJECT STATUS`,
+         `DECISION SIGNED`, `DECISION TYPE`, `APPEALED OR OBJECTED?`, 
+         `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, COMMENTS_FILED)
+
+write_csv(pals_pin_on, paste0(here::here("data/processed/ea_eis_metadata.csv")), 
+          col_names = TRUE, append = TRUE)
+
+# Write code to append to google sheet
 
 mean(pals_pin_new$Total_Files)
 median(pals_pin_new$Total_Files)
