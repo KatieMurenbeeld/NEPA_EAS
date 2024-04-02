@@ -132,7 +132,7 @@ meta_data_ea <- meta_data %>%
 n_occur_eis <- data.frame(table(meta_data_eis$Project_Number))
 n_occur_eis[n_occur_eis$Freq > 1,]
 
-meta_data_ea_dup <- meta_data_eis %>%
+meta_data_eis_dup <- meta_data_eis %>%
   group_by(Project_Number) %>%
   summarise_all(sum)
 
@@ -146,5 +146,5 @@ meta_data_eis_url <- left_join(meta_data_eis_dup, pin_proj, by = c("Project_Numb
 
 ## write meta_data to a csv
 #write_csv(meta_data_url, here::here(paste0("data/processed/", format(Sys.Date(), format = "%m-%d-%Y"), "_metadata_urls_EAs.csv")))
-write_csv(meta_data_eis_url, here::here(paste0("data/processed/", format(Sys.Date(), format = "%m-%d-%Y", "_metadata_urls_EISs.csv"))))
+#write_csv(meta_data_eis_url, here::here(paste0("data/processed/", format(Sys.Date(), format = "%m-%d-%Y"), "_metadata_urls_EISs.csv")))
 
