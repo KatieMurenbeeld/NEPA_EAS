@@ -70,11 +70,18 @@ for (i in zip_list_eis) { #may need to do in chunks zip_list[1:100]?
     monitoring <- length(str_subset(tmp_list, "Monitoring/"))
     postdecision <- length(str_subset(tmp_list, "Post-Decision/"))
     appeals <- length(str_subset(tmp_list, "Post-Decision/Appeals/"))
-    output <- c(project_num, total, prescoping, scoping, supporting, analysis, assessment, decision, postdecision, appeals)
+    output <- c(project_num, total, forest_plan, 
+                prescoping, scoping, supporting, 
+                analysis, assessment, decision,
+                implementation, monitoring, postdecision, appeals)
     meta_data_eis <- rbind(meta_data_eis, as.numeric(output))
   }
 }
-colnames(meta_data_eis) <- c("Project_Number", "Total_Files", "Prescoping", "Scoping", "Supporting", "Analysis", "Assessment", "Decision", "Postdecision", "Postdecision_Appeals")
+
+colnames(meta_data_eis) <- c("Project_Number", "Total_Files", "Forest_Plan", 
+                             "Prescoping", "Scoping", "Supporting", "Analysis", 
+                             "Assessment", "Decision", "Implementation", 
+                             "Monitoring", "Postdecision", "Postdecision_Appeals")
 
 #---Same code but if the files were already unzipped----
 
