@@ -83,7 +83,7 @@ pals_facts$`DECISION SIGNED` <- as.Date.character(pals_facts$`DECISION SIGNED`, 
 
 pals_facts_2009 <- filter(pals_facts, `DECISION SIGNED` > as.Date("2009-01-01"))
 
-write.csv(pals_facts_2009, file = here::here("data/processed/pals-in-facts_2009.csv"))
+#write.csv(pals_facts_2009, file = here::here("data/processed/pals-in-facts_2009.csv"))
 
 
 
