@@ -35,7 +35,8 @@ pals_ea_meta <- pals_ea_on %>%
   select(Project_Number, Total_Files, `PROJECT NAME`, 
          REGION_ID, FOREST_ID, `PROJECT STATUS`,
          `DECISION SIGNED`, `DECISION TYPE`, `APPEALED OR OBJECTED?`, 
-         `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, `ELAPSED DAYS`)
+         `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, `ELAPSED DAYS`,
+         Pinyon_url, Overview_url)
 
 write_csv(pals_ea_meta, here::here(paste0("data/processed/ea_metadata_", format(Sys.Date(), format = "%m-%d-%Y"), ".csv")), 
           col_names = TRUE)
@@ -44,7 +45,8 @@ pals_eis_meta <- pals_eis_on %>%
   select(Project_Number, Total_Files, `PROJECT NAME`, 
          REGION_ID, FOREST_ID, `PROJECT STATUS`,
          `DECISION SIGNED`, `DECISION TYPE`, `APPEALED OR OBJECTED?`, 
-         `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, `ELAPSED DAYS`)
+         `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, `ELAPSED DAYS`,
+         Pinyon_url, Overview_url)
 
 write_csv(pals_eis_meta, here::here(paste0("data/processed/eis_metadata_", format(Sys.Date(), format = "%m-%d-%Y"), ".csv")), 
           col_names = TRUE)
