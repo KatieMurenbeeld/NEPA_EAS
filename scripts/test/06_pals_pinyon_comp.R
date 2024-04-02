@@ -28,7 +28,7 @@ pals_pin_meta <- pals_pin_on %>%
   select(Project_Number, Total_Files, `PROJECT NAME`, 
          REGION_ID, FOREST_ID, `PROJECT STATUS`,
          `DECISION SIGNED`, `DECISION TYPE`, `APPEALED OR OBJECTED?`, 
-         `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, COMMENTS_FILED)
+         `LITIGATED?`, `NO COMMENTS OR ONLY SUPPORT?`, `ELAPSED DAYS`)
 
 write_csv(pals_pin_meta, paste0(here::here("data/processed/ea_eis_metadata.csv")), 
           col_names = TRUE)
