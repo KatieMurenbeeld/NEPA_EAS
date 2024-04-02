@@ -54,7 +54,7 @@ for (i in zip_list_eis) { #may need to do in chunks zip_list[1:100]?
   unzip(paste0(zipdir_eis, "/", i), exdir = tmp)
   folder_list <- list.dirs(path = tmp, full.names = TRUE, recursive = FALSE)
   for (n in folder_list){
-    print(i)
+    #print(i)
     tmp_list <- list.files(path = paste0(n, "/"), pattern = ".pdf", recursive = TRUE)
     project_num <- str_extract(i, "(?<=\\()[0-9]+?(?=\\).z)") 
     # if project number already in meta_data df then skip
@@ -121,19 +121,30 @@ meta_data_eis <- meta_data_eis %>%
   mutate(Postdecision = Postdecision - Postdecision_Appeals) %>%
   mutate(Scoping = Scoping - Prescoping)
 
-# Join to the pin_proj data frame with the urls
-
-meta_data_url <- left_join(meta_data, pin_proj, by = c("Project_Number" = "project_number"))
-meta_data_eis_url <- left_join(meta_data_eis, pin_proj, by = c("Project_Number" = "project_number"))
-
 # Check for duplicated projects
-n_occur <- data.frame(table(meta_data_url$Project_Number))
+n_occur <- data.frame(table(meta_data$Project_Number))
 n_occur[n_occur$Freq > 1,]
 
-n_occur_eis <- data.frame(table(meta_data_eis_url$Project_Number))
+meta_data_ea <- meta_data %>%
+  group_by(Project_Number) %>%
+  summarise_all(sum)
+
+n_occur_eis <- data.frame(table(meta_data_eis$Project_Number))
 n_occur_eis[n_occur_eis$Freq > 1,]
 
+meta_data_ea_dup <- meta_data_eis %>%
+  group_by(Project_Number) %>%
+  summarise_all(sum)
+
+# Join to the pin_proj data frame with the urls
+
+meta_data_url <- left_join(meta_data_ea, pin_proj, by = c("Project_Number" = "project_number"))
+meta_data_eis_url <- left_join(meta_data_eis_dup, pin_proj, by = c("Project_Number" = "project_number"))
+
+
+
+
 ## write meta_data to a csv
-write_csv(meta_data_url, here::here(paste0("data/processed/", format(Sys.Date(), format = "%m-%d-%Y"), "_metadata_urls_EAs.csv")))
+#write_csv(meta_data_url, here::here(paste0("data/processed/", format(Sys.Date(), format = "%m-%d-%Y"), "_metadata_urls_EAs.csv")))
 write_csv(meta_data_eis_url, here::here(paste0("data/processed/", format(Sys.Date(), format = "%m-%d-%Y", "_metadata_urls_EISs.csv"))))
 
