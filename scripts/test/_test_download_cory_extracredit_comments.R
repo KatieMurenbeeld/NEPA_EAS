@@ -3,6 +3,7 @@ library(tidyverse)
 library(stringr)
 library(rvest)
 library(googledrive)
+library(googlesheets4)
 options(
   gargle_oauth_cache = ".secrets",
   gargle_oauth_email = TRUE
@@ -60,6 +61,14 @@ merged_comment_data <- rbind(comments_1, comments_2, comments_3,
                              comments_7_clean)
 
 
-write_csv(merged_comment_data, here::here(paste0("data/original/struthers_extra-credit_comments_clean_", Sys.Date(), ".csv")))
+# save the merged data as a csv
+write_csv(merged_comment_data, here::here(paste0("data/original/struthers_extra-credit_comments_merged_", Sys.Date(), ".csv")))
+
+# upload the merged data to google drive
+gs <- gs4_create("struthers_extra-credit_comments_merged", sheets = merged_comment_data)
+
+folder_id <- drive_get(as_id("https://drive.google.com/drive/u/0/folders/1r6lwJTj2ZQ5FhvZpx52pYhMfgNuouFif"))
+sheet_id <- drive_get(as_id("https://docs.google.com/spreadsheets/d/164FlMlIGrZUq5Ug4ESXHz1oAtbzIlwSRTGzkQDysScg/edit?gid=1857299609#gid=1857299609"))
+drive_mv(file = as_id(sheet_id), path = as_id(folder_id))
 
 
