@@ -1,3 +1,4 @@
+# I may have run this on Borah, hence the "scratch" diectories
 library(tidyverse)
 library(rvest)
 library(stringr)
