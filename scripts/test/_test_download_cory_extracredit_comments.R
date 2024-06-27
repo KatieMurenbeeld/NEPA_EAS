@@ -45,10 +45,21 @@ comments_5_clean <- comments_5 %>%
   rename(`#_comment_draft` = `#_draft`)
 identical(names(comments_1), names(comments_5_clean))
 
-merged_comment_data <- rbind()
+comments_6_clean <- comments_6 %>%
+  select(-`...11`, -`...12`)
+identical(names(comments_1), names(comments_6_clean))
 
-merged_comment_data <- 
-  do.call(rbind,
-          lapply(list.files(path = here::here("data/original/"), pattern = "struther*", full.names = TRUE), read.csv))
+comments_7_clean <- comments_7 %>%
+  select(-scoping_type, -draft_type)
+identical(names(comments_1), names(comments_7_clean))
 
-article_codes <- read.csv(file = "data/original/new_article_coding.csv")
+## Now that all the datasets have the same column names we can merge
+
+merged_comment_data <- rbind(comments_1, comments_2, comments_3,
+                             comments_4, comments_5_clean, comments_6_clean,
+                             comments_7_clean)
+
+
+write_csv(merged_comment_data, here::here(paste0("data/original/struthers_extra-credit_comments_clean_", Sys.Date(), ".csv")))
+
+
